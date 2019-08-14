@@ -1,0 +1,9 @@
+Create a new project SampleWeb.Data
+
+Install these packages
+ Install-Package Microsoft.EntityFrameworkCore
+ Install-Package Microsoft.EntityFrameworkCore.SqlServer
+ Install-Package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+
+Add a project Reference to Data from SampleWeb
+Move the contents of the SampleWeb/Data folder to the Data project root & correct namespaces

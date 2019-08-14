@@ -18,6 +18,11 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\SampleWeb.Data\SampleWeb.Data.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
