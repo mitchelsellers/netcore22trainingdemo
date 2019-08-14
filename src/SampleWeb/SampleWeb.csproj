@@ -5,7 +5,9 @@
     <UserSecretsId>aspnet-SampleWeb-B7EC522D-C05A-4E4C-B592-AFE876B0BE0E</UserSecretsId>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <Version>0.0.0</Version>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.9.406" />

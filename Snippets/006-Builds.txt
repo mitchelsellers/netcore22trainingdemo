@@ -1,0 +1,12 @@
+Automated Build Prep
+
+Edit each project to add
+  <PropertyGroup>
+    <Version>0.0.0</Version>
+  </PropertyGroup>
+  
+  Notes for SETUP
+  
+  Veersion - $(MajorVersion).$(MinorVersion)$(rev:.r)
+  
+  Version (Releae) - $(Build.BuildNumber)-Release-$(rev:r)
