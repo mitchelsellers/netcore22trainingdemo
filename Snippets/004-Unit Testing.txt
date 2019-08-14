@@ -1,0 +1,69 @@
+Create a new xUnit Test Project SampleWeb.Tests
+
+Delete auto created files
+Add reference to SampleWeb
+Install-Package Moq
+Install-Package Microsoft.AspNetCore.Mvc.Abstractions
+Install-Package Microsoft.AspNetCore.Mvc.ViewFeatures
+
+Create a new file /Controllers/HomeControllerTests
+
+using Microsoft.AspNetCore.Mvc;
+using SampleWeb.Controllers;
+using SampleWeb.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Xunit;
+
+namespace SampleWeb.Tests.Controllers
+{
+    public class HomeControllerTests
+    {
+        [Fact]
+        public void Index_ReturnsAViewResult_WithNullModel()
+        {
+            //Arrange
+            var controller = new HomeController();
+
+            //Act
+            var result = controller.Index();
+
+            //Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Null(viewResult.Model);
+        }
+
+        [Fact]
+        public void Privacy_ReturnsAViewResult_WithNullModel()
+        {
+            //Arrange
+            var controller = new HomeController();
+
+            //Act
+            var result = controller.Privacy();
+
+            //Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Null(viewResult.Model);
+        }
+
+        //[Fact]
+        //public void Error_ReturnsAViewResult_WithAnErrorViewModel()
+        //{
+        //    //Arrange
+        //    var controller = new HomeController();
+
+        //    //Act
+        //    var result = controller.Error();
+
+        //    //Assert
+        //    var viewResult = Assert.IsType<ViewResult>(result);
+        //    var modelData = Assert.IsAssignableFrom<ErrorViewModel>(viewResult.Model);
+        //}
+    }
+}
+
+
+Exclude items from test coverage
+[ExcludeFromCodeCoverage]
