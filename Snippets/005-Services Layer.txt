@@ -1,0 +1,125 @@
+Add new project SampleWeb.Services
+
+Add Reference to Data
+Add Reference in Web project to this new project
+
+Add a new file /DependencyResolution/StartupExtensions.cs with this content
+namespace Microsoft.Extensions.DependencyInjection
+{
+    public static class StartupExtensions
+    {
+        public static void RegisterDataServices(this IServiceCollection services)
+        {
+            //Add your stuff here!
+
+        }
+    }
+}
+
+Add a new file /Samples/Models/FormWithFileViewModel.cs
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
+
+namespace SampleWeb.Services.Samples.Models
+{
+    public class FormWithFileViewModel
+    {
+        [Required]
+        [StringLength(25)]
+        public string FirstName { get; set; }
+        [Required]
+        [StringLength(25)]
+        public string LastName { get; set; }
+        public IFormFile ProfilePhoto { get; set; }
+    }
+}
+
+
+Add a new file /Samples/SampleDataService.cs with the following
+
+using SampleWeb.Services.Samples.Models;
+
+namespace SampleWeb.Services.Samples
+{
+    public interface ISampleDataService
+    {
+        FormWithFileViewModel GetFormWithFileViewModel();
+        bool ProcessFormWithFileViewModel(FormWithFileViewModel model);
+    }
+
+    public class SampleDataService : ISampleDataService
+    {
+        public FormWithFileViewModel GetFormWithFileViewModel()
+        {
+            //Do special initialization here
+            return new FormWithFileViewModel();
+        }
+
+        public bool ProcessFormWithFileViewModel(FormWithFileViewModel model)
+        {
+            //Do actual stuff here
+            return true;
+        }
+    }
+}
+
+
+Add to the StartupExtensions
+services.AddTransient<ISampleDataService, SampleDataService>();
+
+Add to startup.cs inside of the "ConfigureServices" section, just after AddMvc()
+
+services.RegisterDataServices();
+
+Add a SampleController with this content
+using Microsoft.AspNetCore.Mvc;
+using SampleWeb.Services.Samples;
+using SampleWeb.Services.Samples.Models;
+
+namespace SampleWeb.Controllers
+{
+    public class SampleController : Controller
+    {
+        private readonly ISampleDataService _sampleDataService;
+
+        public SampleController(ISampleDataService sampleDataService)
+        {
+            _sampleDataService = sampleDataService;
+        }
+
+        [HttpGet]
+        public IActionResult TestForm()
+        {
+            return View(_sampleDataService.GetFormWithFileViewModel());
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult TestForm(FormWithFileViewModel data)
+        {
+            if (!ModelState.IsValid)
+                return View(data);
+
+            var success = _sampleDataService.ProcessFormWithFileViewModel(data);
+            if (success)
+                return RedirectToAction("Index", "Home");
+
+            ModelState.AddModelError("", "Unknown error");
+            return View(data);
+        }
+    }
+}
+
+Auto-scaffold a view
+
+Add this to the <form> tag  method="post" enctype="multipart/form-data"
+
+Add this form entry
+
+
+            <div class="form-group">
+                <label asp-for="ProfilePhoto" class="control-label"></label>
+                <input type="file" asp-for="ProfilePhoto" class="form-control" />
+                <span asp-validation-for="ProfilePhoto" class="text-danger"></span>
+                <span class="help-block">Should Be 945 X 490 px & Compressed using <a href="https://compresspng.com" target="_blank">Compress Png</a> or <a href="https://compressjpg.com" target="_blank;">Compress Jpg</a> before upload</span>
+            </div>
